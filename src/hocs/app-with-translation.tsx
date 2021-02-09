@@ -1,13 +1,11 @@
-import React from 'react'
-import { withRouter } from 'next/router'
-
 import hoistNonReactStatics from 'hoist-non-react-statics'
+import { withRouter } from 'next/router'
+import React from 'react'
 import { I18nextProvider, withSSR } from 'react-i18next'
-
-import { nextI18NextMiddleware } from '../middlewares'
-import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
-import { isServer } from '../utils'
+
+import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
+
 interface Props {
   initialLanguage: string;
   initialI18nStore: any;
@@ -36,7 +34,7 @@ export const appWithTranslation = function (WrappedComponent) {
 
     constructor(props) {
       super(props)
-      if (!isServer()) {
+      if (process.browser) {
 
         const changeLanguageCallback = (prevLng: string, newLng: string) => {
           const { router } = props
@@ -45,7 +43,7 @@ export const appWithTranslation = function (WrappedComponent) {
 
           if (i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
             const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
-            router.replace(href, as, { shallow: config.shallowRender })
+            router.replace(href, as,{ shallow: config.shallowRender })
           }
         }
 
@@ -82,12 +80,19 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Preprocess the req via next-i18next and i18next middlewares
       */
-      if (req && res) {
+      let middlewarePromise = Promise.resolve()
+
+      if (!process.browser && req && res) {
+        const {default: nextI18NextMiddleware} = require('../middlewares/next-i18next-middleware')
         const middlewares = nextI18NextMiddleware(nextI18Next)
-        for (const middleware of middlewares) {
-          await new Promise((resolve) => middleware(req, res, resolve))
-        }
+        middlewarePromise = middlewares.reduce(
+          (lastPromise, middleware) =>
+            lastPromise.then(() => new Promise((resolve) => middleware(req, res, resolve))),
+          Promise.resolve()
+        )
       }
+
+      await middlewarePromise
 
       /* Call getInitialProps on our wrapped _app */
       let wrappedComponentProps: WrappedComponentProps = { pageProps: {} }
@@ -104,7 +109,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 1: Determine initial language
       */
-      if (req && req.i18n) {
+      if (!process.browser && req && req.i18n) {
 
         initialLanguage = lngFromReq(req)
 
@@ -143,7 +148,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 3: Perform data fetching, depending on environment
       */
-      if (req && req.i18n) {
+      if (!process.browser && req && req.i18n) {
 
         /*
           Detect the languages to load based upon the fallbackLng configuration

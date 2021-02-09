@@ -1,5 +1,5 @@
 import { defaultConfig } from './default-config'
-import { consoleMessage, isServer, isCIMode } from '../utils'
+import { consoleMessage, isCIMode } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
@@ -38,7 +38,7 @@ export const createConfig = (userConfig) => {
     localeStructure,
   } = combinedConfig
 
-  /** 
+  /**
    * Skips translation file resolution while in cimode
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
@@ -46,7 +46,7 @@ export const createConfig = (userConfig) => {
     return combinedConfig
   }
 
-  if (isServer()) {
+  if (!process.browser) {
     /*
       On Server side preload (languages)
     */
@@ -54,10 +54,10 @@ export const createConfig = (userConfig) => {
 
     const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
     if (!hasCustomBackend) {
-      const fs = eval("require('fs')")
+      const fs = require('fs')
       const path = require('path')
       let serverLocalePath = localePath
-  
+
       /*
         Validate defaultNS
         https://github.com/isaachinman/next-i18next/issues/358
@@ -67,14 +67,14 @@ export const createConfig = (userConfig) => {
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists) {
-  
+
           /*
             If defaultNS doesn't exist, try to fall back to the deprecated static folder
             https://github.com/isaachinman/next-i18next/issues/523
           */
           const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
           const staticDirExists = fs.existsSync(staticDirPath)
-  
+
           if (staticDirExists) {
             consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
             serverLocalePath = STATIC_LOCALE_PATH
@@ -83,7 +83,7 @@ export const createConfig = (userConfig) => {
           }
         }
       }
-  
+
       /*
         Set server side backend
       */
@@ -91,7 +91,7 @@ export const createConfig = (userConfig) => {
         loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
         addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
       }
-  
+
       /*
         Set server side preload (namespaces)
       */
@@ -103,7 +103,7 @@ export const createConfig = (userConfig) => {
   } else {
 
     let clientLocalePath = localePath
-    
+
     /*
       Remove public prefix from client site config
     */

@@ -8,6 +8,7 @@
     "url": "https://github.com/sponsors/isaachinman"
   },
   "main": "dist/commonjs/index.js",
+  "module": "dist/es/index.js",
   "types": "./types.d.ts",
   "license": "MIT",
   "engines": {
