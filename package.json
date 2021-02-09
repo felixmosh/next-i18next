@@ -8,6 +8,7 @@
     "url": "https://github.com/sponsors/isaachinman"
   },
   "main": "dist/commonjs/index.js",
+  "module": "dist/es/index.js",
   "types": "./types.d.ts",
   "license": "MIT",
   "engines": {
@@ -50,7 +51,7 @@
   "bundlesize": [
     {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
-      "maxSize": "106 kB"
+      "maxSize": "108 kB"
     },
     {
       "path": "./examples/simple/.next/static/runtime/main*.js",
