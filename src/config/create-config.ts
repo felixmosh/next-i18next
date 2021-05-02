@@ -98,8 +98,8 @@ export const createConfig = (userConfig) => {
       Set client side backend
     */
     combinedConfig.backend = {
-      loadPath: `/${clientLocalePath}/${localeStructure}.${localeExtension}`,
-      addPath: `/${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
+      loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
+      addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
     }
 
     combinedConfig.ns = [combinedConfig.defaultNS]
