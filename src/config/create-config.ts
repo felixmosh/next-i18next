@@ -38,15 +38,15 @@ export const createConfig = (userConfig) => {
 
     const fs = require('fs')
     const path = require('path')
-    let serverLocalePath = localePath
+    let serverLocalePath = path.isAbsolute(localePath) ? localePath : path.join(process.cwd(), localePath)
 
     /*
       Validate defaultNS
       https://github.com/isaachinman/next-i18next/issues/358
     */
     if (typeof combinedConfig.defaultNS === 'string') {
-      const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
-      const defaultNSPath = path.join(process.cwd(), localePath, defaultFile)
+      const defaultFile = path.join(defaultLanguage, `${combinedConfig.defaultNS}.${localeExtension}`)
+      const defaultNSPath = path.join(serverLocalePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
 
@@ -70,8 +70,8 @@ export const createConfig = (userConfig) => {
       Set server side backend
     */
     combinedConfig.backend = {
-      loadPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
+      loadPath: path.join(serverLocalePath, `${localeStructure}.${localeExtension}`),
+      addPath: path.join(serverLocalePath, `${localeStructure}.missing.${localeExtension}`),
     }
 
     /*
@@ -80,7 +80,7 @@ export const createConfig = (userConfig) => {
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
+      combinedConfig.ns = getAllNamespaces(path.join(serverLocalePath, defaultLanguage))
     }
 
   } else {
