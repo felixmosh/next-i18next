@@ -7,7 +7,7 @@ import {
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation
 } from 'react-i18next'
-import { LinkProps } from 'next/link'
+import NextLink  from 'next/link'
 import { Request } from 'express'
 import { SingletonRouter } from 'next/router'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
@@ -40,7 +40,7 @@ export interface NextI18NextInternals {
 }
 
 export type Trans = (props: TransProps) => any
-export type Link = React.ComponentClass<LinkProps>
+export type Link = typeof NextLink
 export type Router = SingletonRouter
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
