@@ -40,7 +40,7 @@ export interface NextI18NextInternals {
 }
 
 export type Trans = (props: TransProps) => any
-export type Link = React.ComponentClass<LinkProps>
+export type Link = React.ComponentType<LinkProps>
 export type Router = SingletonRouter
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
