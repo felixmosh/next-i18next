@@ -17,7 +17,6 @@
 */
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import NextLink, { LinkProps } from 'next/link'
 import { withTranslation } from 'react-i18next'
 
@@ -45,21 +44,6 @@ type Props = LinkProps & {
 }
 
 class Link extends React.Component<Props> {
-  static propTypes = {
-    as: PropTypes.string,
-    children: PropTypes.node.isRequired,
-    href: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-    nextI18NextInternals: PropTypes.shape({
-      config: PropTypes.shape({
-        defaultLanguage: PropTypes.string.isRequired,
-        localeSubpaths: PropTypes.object.isRequired,
-      }).isRequired,
-    }).isRequired,
-  }
-
   static defaultProps = {
     as: undefined,
   }

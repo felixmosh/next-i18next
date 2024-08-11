@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { withTranslation } from 'react-i18next'
 
@@ -8,10 +7,6 @@ interface Props {
 }
 
 class NextStaticProvider extends React.Component<Props> {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    tReady: PropTypes.bool,
-  }
 
   static defaultProps = {
     tReady: true,
