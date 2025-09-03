@@ -30,7 +30,7 @@ export type InitConfig = {
 export type Config = {
   fallbackLng: boolean;
   allLanguages: string[];
-  whitelist: string[];
+  supportedLngs: string[];
   preload: string[];
 } & InitConfig
 

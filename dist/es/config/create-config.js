@@ -26,8 +26,8 @@ function _object_spread(target) {
     }
     return target;
 }
-import { defaultConfig } from './default-config';
 import { consoleMessage } from '../utils';
+import { defaultConfig } from './default-config';
 var deepMergeObjects = [
     'backend',
     'detection'
@@ -47,10 +47,8 @@ export var createConfig = function(userConfig) {
   */ var combinedConfig = _object_spread({}, defaultConfig, userConfig);
     /*
     Sensible defaults to prevent user duplication
-  */ combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages.concat([
-        combinedConfig.defaultLanguage
-    ]));
-    combinedConfig.whitelist = combinedConfig.allLanguages;
+  */ combinedConfig.allLanguages = dedupe([].concat(combinedConfig.otherLanguages, combinedConfig.defaultLanguage));
+    combinedConfig.supportedLngs = combinedConfig.allLanguages.slice(0);
     var allLanguages = combinedConfig.allLanguages, defaultLanguage = combinedConfig.defaultLanguage, localeExtension = combinedConfig.localeExtension, localePath = combinedConfig.localePath, localeStructure = combinedConfig.localeStructure;
     if (!process.browser) {
         var fs = require('fs');

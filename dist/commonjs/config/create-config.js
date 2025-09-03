@@ -8,8 +8,8 @@ Object.defineProperty(exports, "createConfig", {
         return createConfig;
     }
 });
-var _defaultconfig = require("./default-config");
 var _utils = require("../utils");
+var _defaultconfig = require("./default-config");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -57,10 +57,8 @@ var createConfig = function(userConfig) {
   */ var combinedConfig = _object_spread({}, _defaultconfig.defaultConfig, userConfig);
     /*
     Sensible defaults to prevent user duplication
-  */ combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages.concat([
-        combinedConfig.defaultLanguage
-    ]));
-    combinedConfig.whitelist = combinedConfig.allLanguages;
+  */ combinedConfig.allLanguages = dedupe([].concat(combinedConfig.otherLanguages, combinedConfig.defaultLanguage));
+    combinedConfig.supportedLngs = combinedConfig.allLanguages.slice(0);
     var allLanguages = combinedConfig.allLanguages, defaultLanguage = combinedConfig.defaultLanguage, localeExtension = combinedConfig.localeExtension, localePath = combinedConfig.localePath, localeStructure = combinedConfig.localeStructure;
     if (!process.browser) {
         var fs = require('fs');

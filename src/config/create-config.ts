@@ -1,14 +1,14 @@
-import { defaultConfig } from './default-config'
-import { consoleMessage } from '../utils'
+import { consoleMessage } from '../utils';
+import { defaultConfig } from './default-config';
 
-const deepMergeObjects = ['backend', 'detection']
-const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
-const STATIC_LOCALE_PATH = 'static/locales'
+const deepMergeObjects = ['backend', 'detection'];
+const dedupe = (names: string[]) => names.filter((v, i) => names.indexOf(v) === i);
+const STATIC_LOCALE_PATH = 'static/locales';
 
 export const createConfig = (userConfig) => {
 
   if (typeof userConfig.localeSubpaths === 'string') {
-    throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
+    throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.');
   }
 
   /*
@@ -17,14 +17,13 @@ export const createConfig = (userConfig) => {
   const combinedConfig = {
     ...defaultConfig,
     ...userConfig,
-  }
+  };
 
   /*
     Sensible defaults to prevent user duplication
   */
-  combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
-    .concat([combinedConfig.defaultLanguage]))
-  combinedConfig.whitelist = combinedConfig.allLanguages
+  combinedConfig.allLanguages = dedupe([].concat(combinedConfig.otherLanguages, combinedConfig.defaultLanguage));
+  combinedConfig.supportedLngs = combinedConfig.allLanguages.slice(0);
 
   const {
     allLanguages,
@@ -32,36 +31,36 @@ export const createConfig = (userConfig) => {
     localeExtension,
     localePath,
     localeStructure,
-  } = combinedConfig
+  } = combinedConfig;
 
   if (!process.browser) {
 
-    const fs = require('fs')
-    const path = require('path')
-    let serverLocalePath = path.isAbsolute(localePath) ? localePath : path.join(process.cwd(), localePath)
+    const fs = require('fs');
+    const path = require('path');
+    let serverLocalePath = path.isAbsolute(localePath) ? localePath : path.join(process.cwd(), localePath);
 
     /*
       Validate defaultNS
       https://github.com/isaachinman/next-i18next/issues/358
     */
     if (typeof combinedConfig.defaultNS === 'string') {
-      const defaultFile = path.join(defaultLanguage, `${combinedConfig.defaultNS}.${localeExtension}`)
-      const defaultNSPath = path.join(serverLocalePath, defaultFile)
-      const defaultNSExists = fs.existsSync(defaultNSPath)
+      const defaultFile = path.join(defaultLanguage, `${combinedConfig.defaultNS}.${localeExtension}`);
+      const defaultNSPath = path.join(serverLocalePath, defaultFile);
+      const defaultNSExists = fs.existsSync(defaultNSPath);
       if (!defaultNSExists) {
 
         /*
           If defaultNS doesn't exist, try to fall back to the deprecated static folder
           https://github.com/isaachinman/next-i18next/issues/523
         */
-        const staticDirPath = path.join(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
-        const staticDirExists = fs.existsSync(staticDirPath)
+        const staticDirPath = path.join(process.cwd(), STATIC_LOCALE_PATH, defaultFile);
+        const staticDirExists = fs.existsSync(staticDirPath);
 
         if (staticDirExists) {
-          consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
-          serverLocalePath = STATIC_LOCALE_PATH
+          consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig);
+          serverLocalePath = STATIC_LOCALE_PATH;
         } else if (process.env.NODE_ENV !== 'production') {
-          throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          throw new Error(`Default namespace not found at ${defaultNSPath}`);
         }
       }
     }
@@ -72,26 +71,26 @@ export const createConfig = (userConfig) => {
     combinedConfig.backend = {
       loadPath: path.join(serverLocalePath, `${localeStructure}.${localeExtension}`),
       addPath: path.join(serverLocalePath, `${localeStructure}.missing.${localeExtension}`),
-    }
+    };
 
     /*
       Set server side preload (languages and namespaces)
     */
-    combinedConfig.preload = allLanguages
+    combinedConfig.preload = allLanguages;
     if (!combinedConfig.ns) {
-      const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(serverLocalePath, defaultLanguage))
+      const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''));
+      combinedConfig.ns = getAllNamespaces(path.join(serverLocalePath, defaultLanguage));
     }
 
   } else {
 
-    let clientLocalePath = localePath
+    let clientLocalePath = localePath;
 
     /*
       Remove public prefix from client site config
     */
     if (localePath.startsWith('public/')) {
-      clientLocalePath = localePath.replace(/^public\//, '')
+      clientLocalePath = localePath.replace(/^public\//, '');
     }
 
     /*
@@ -100,9 +99,9 @@ export const createConfig = (userConfig) => {
     combinedConfig.backend = {
       loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
       addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
-    }
+    };
 
-    combinedConfig.ns = [combinedConfig.defaultNS]
+    combinedConfig.ns = [combinedConfig.defaultNS];
   }
 
   /*
@@ -111,7 +110,7 @@ export const createConfig = (userConfig) => {
   if (typeof userConfig.fallbackLng !== 'boolean' && !userConfig.fallbackLng) {
     combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
       ? combinedConfig.defaultLanguage
-      : false
+      : false;
   }
 
   /*
@@ -122,9 +121,9 @@ export const createConfig = (userConfig) => {
       combinedConfig[obj] = {
         ...defaultConfig[obj],
         ...userConfig[obj],
-      }
+      };
     }
-  })
+  });
 
-  return combinedConfig
-}
+  return combinedConfig;
+};
