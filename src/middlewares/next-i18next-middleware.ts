@@ -42,7 +42,7 @@ export default function (nexti18next) {
     This does the bulk of the i18next work
   */
   middleware.push(i18nextMiddleware.handle(i18n, {
-    ignoreRoutes: ignoreRoutes,
+    ignoreRoutes,
   }))
 
   /*
@@ -86,7 +86,7 @@ export default function (nexti18next) {
         const params = localeSubpathRoute(req.url)
         if (params !== false) {
           const { subpath } = params
-          req.query = { ...req.query, subpath, lng: currentLng }
+          req.query = { ...req.query, lng: currentLng, __nextLocale: currentLng, __nextDefaultLocale: config.defaultLanguage }
           req.url = removeSubpath(req.url, subpath)
         }
       }
