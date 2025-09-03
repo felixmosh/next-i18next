@@ -43,14 +43,14 @@ _export(exports, {
         return _subpathisrequired.subpathIsRequired;
     }
 });
-var _addsubpath = require("./add-subpath");
-var _consolemessage = require("./console-message");
-var _isserver = require("./is-server");
-var _lngfromreq = require("./lng-from-req");
-var _lngpathcorrector = require("./lng-path-corrector");
-var _lngstoload = require("./lngs-to-load");
-var _redirectwithoutcache = require("./redirect-without-cache");
-var _removesubpath = require("./remove-subpath");
-var _subpathfromlng = require("./subpath-from-lng");
-var _subpathispresent = require("./subpath-is-present");
-var _subpathisrequired = require("./subpath-is-required");
+const _addsubpath = require("./add-subpath");
+const _consolemessage = require("./console-message");
+const _isserver = require("./is-server");
+const _lngfromreq = require("./lng-from-req");
+const _lngpathcorrector = require("./lng-path-corrector");
+const _lngstoload = require("./lngs-to-load");
+const _redirectwithoutcache = require("./redirect-without-cache");
+const _removesubpath = require("./remove-subpath");
+const _subpathfromlng = require("./subpath-from-lng");
+const _subpathispresent = require("./subpath-is-present");
+const _subpathisrequired = require("./subpath-is-required");

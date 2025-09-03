@@ -1,3 +1,1 @@
-export var isServer = function() {
-    return typeof window === 'undefined';
-};
+export const isServer = ()=>typeof window === 'undefined';

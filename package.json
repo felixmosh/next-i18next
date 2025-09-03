@@ -63,8 +63,8 @@
     }
   ],
   "devDependencies": {
-    "@swc/cli": "^0.4.0",
-    "@swc/core": "^1.7.10",
+    "@swc/cli": "^0.7.8",
+    "@swc/core": "^1.13.5",
     "@types/jest": "^24.0.16",
     "@types/jest-environment-puppeteer": "^4.0.0",
     "@types/react": "^16.8.4",

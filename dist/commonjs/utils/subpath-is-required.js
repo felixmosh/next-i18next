@@ -8,6 +8,4 @@ Object.defineProperty(exports, "subpathIsRequired", {
         return subpathIsRequired;
     }
 });
-var subpathIsRequired = function(config, language) {
-    return typeof config.localeSubpaths[language] === 'string';
-};
+const subpathIsRequired = (config, language)=>typeof config.localeSubpaths[language] === 'string';

@@ -8,6 +8,4 @@ Object.defineProperty(exports, "removeSubpath", {
         return removeSubpath;
     }
 });
-var removeSubpath = function(url, subpath) {
-    return url.replace(subpath, '').replace(/(https?:\/\/)|(\/)+/g, "$1$2");
-};
+const removeSubpath = (url, subpath)=>url.replace(subpath, '').replace(/(https?:\/\/)|(\/)+/g, "$1$2");

@@ -16,5 +16,5 @@ _export(exports, {
         return _withinternals.withInternals;
     }
 });
-var _appwithtranslation = require("./app-with-translation");
-var _withinternals = require("./with-internals");
+const _appwithtranslation = require("./app-with-translation");
+const _withinternals = require("./with-internals");

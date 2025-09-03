@@ -8,43 +8,11 @@ Object.defineProperty(exports, "lngPathCorrector", {
         return lngPathCorrector;
     }
 });
-var _url = require("url");
-var _index = require("./index");
-function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-function _object_spread(target) {
-    for(var i = 1; i < arguments.length; i++){
-        var source = arguments[i] != null ? arguments[i] : {};
-        var ownKeys = Object.keys(source);
-        if (typeof Object.getOwnPropertySymbols === "function") {
-            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
-                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-            }));
-        }
-        ownKeys.forEach(function(key) {
-            _define_property(target, key, source[key]);
-        });
-    }
-    return target;
-}
-function _type_of(obj) {
-    "@swc/helpers - typeof";
-    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
-}
-var parseAs = function(originalAs, href) {
-    var asType = typeof originalAs === "undefined" ? "undefined" : _type_of(originalAs);
-    var as;
+const _url = require("url");
+const _index = require("./index");
+const parseAs = (originalAs, href)=>{
+    const asType = typeof originalAs;
+    let as;
     if (asType === 'undefined') {
         as = (0, _url.format)(href, {
             unicode: true
@@ -52,31 +20,35 @@ var parseAs = function(originalAs, href) {
     } else if (asType === 'string') {
         as = originalAs;
     } else {
-        throw new Error("'as' type must be 'string', but it is ".concat(asType));
+        throw new Error(`'as' type must be 'string', but it is ${asType}`);
     }
     return as;
 };
-var parseHref = function(originalHref) {
-    var hrefType = typeof originalHref === "undefined" ? "undefined" : _type_of(originalHref);
-    var href;
+const parseHref = (originalHref)=>{
+    const hrefType = typeof originalHref;
+    let href;
     if (hrefType === 'string') {
         href = (0, _url.parse)(originalHref, true);
     } else if (hrefType === 'object') {
-        href = _object_spread({}, originalHref);
-        href.query = originalHref.query ? _object_spread({}, originalHref.query) : {};
+        href = {
+            ...originalHref
+        };
+        href.query = originalHref.query ? {
+            ...originalHref.query
+        } : {};
     } else {
-        throw new Error("'href' type must be either 'string' or 'object', but it is ".concat(hrefType));
+        throw new Error(`'href' type must be either 'string' or 'object', but it is ${hrefType}`);
     }
     return href;
 };
-var lngPathCorrector = function(config, currentRoute, currentLanguage) {
-    var allLanguages = config.allLanguages, localeSubpaths = config.localeSubpaths;
-    var originalAs = currentRoute.as, originalHref = currentRoute.href;
+const lngPathCorrector = (config, currentRoute, currentLanguage)=>{
+    const { allLanguages, localeSubpaths } = config;
+    const { as: originalAs, href: originalHref } = currentRoute;
     if (!allLanguages.includes(currentLanguage)) {
         throw new Error('Invalid configuration: Current language is not included in all languages array');
     }
-    var href = parseHref(originalHref);
-    var as = parseAs(originalAs, href);
+    let href = parseHref(originalHref);
+    let as = parseAs(originalAs, href);
     /*
     url.format prefers the 'url.search' string over
     the 'url.query' object, so remove the search
@@ -84,21 +56,21 @@ var lngPathCorrector = function(config, currentRoute, currentLanguage) {
   */ delete href.search;
     /*
     Strip any/all subpaths from the `as` value
-  */ Object.values(localeSubpaths).forEach(function(subpath) {
+  */ Object.values(localeSubpaths).forEach((subpath)=>{
         if ((0, _index.subpathIsPresent)(as, subpath)) {
             as = (0, _index.removeSubpath)(as, subpath);
         }
     });
     if ((0, _index.subpathIsRequired)(config, currentLanguage)) {
-        var basePath = "".concat(href.protocol, "//").concat(href.host);
-        var currentAs = as.replace(basePath, '');
-        var subpath = (0, _index.subpathFromLng)(config, currentLanguage);
-        as = "/".concat(subpath).concat(currentAs).replace(/\/$/, '');
+        const basePath = `${href.protocol}//${href.host}`;
+        const currentAs = as.replace(basePath, '');
+        const subpath = (0, _index.subpathFromLng)(config, currentLanguage);
+        as = `/${subpath}${currentAs}`.replace(/\/$/, '');
         href.query.lng = currentLanguage;
         href.query.subpath = subpath;
     }
     return {
-        as: as,
-        href: href
+        as,
+        href
     };
 };

@@ -8,6 +8,4 @@ Object.defineProperty(exports, "isServer", {
         return isServer;
     }
 });
-var isServer = function() {
-    return typeof window === 'undefined';
-};
+const isServer = ()=>typeof window === 'undefined';

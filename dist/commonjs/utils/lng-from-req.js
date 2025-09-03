@@ -8,18 +8,16 @@ Object.defineProperty(exports, "lngFromReq", {
         return lngFromReq;
     }
 });
-var lngFromReq = function(req) {
+const lngFromReq = (req)=>{
     if (!req.i18n) {
         return null;
     }
-    var _req_i18n_options = req.i18n.options, allLanguages = _req_i18n_options.allLanguages, defaultLanguage = _req_i18n_options.defaultLanguage, fallbackLng = _req_i18n_options.fallbackLng;
-    var fallback = fallbackLng || defaultLanguage;
+    const { allLanguages, defaultLanguage, fallbackLng } = req.i18n.options;
+    const fallback = fallbackLng || defaultLanguage;
     if (!req.i18n.languages) {
         return typeof fallback === 'string' ? fallback : null;
     }
-    var language = req.i18n.languages.find(function(l) {
-        return allLanguages.includes(l);
-    }) || fallback;
+    const language = req.i18n.languages.find((l)=>allLanguages.includes(l)) || fallback;
     if (typeof language === 'string') {
         return language;
     }

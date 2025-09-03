@@ -16,8 +16,8 @@ _export(exports, {
         return _NextStaticProvider.default;
     }
 });
-var _Link = /*#__PURE__*/ _interop_require_default(require("./Link"));
-var _NextStaticProvider = /*#__PURE__*/ _interop_require_default(require("./NextStaticProvider"));
+const _Link = /*#__PURE__*/ _interop_require_default(require("./Link"));
+const _NextStaticProvider = /*#__PURE__*/ _interop_require_default(require("./NextStaticProvider"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

@@ -1,10 +1,10 @@
-var DEFAULT_LANGUAGE = 'en';
-var OTHER_LANGUAGES = [];
-var DEFAULT_NAMESPACE = 'common';
-var LOCALE_PATH = 'public/static/locales';
-var LOCALE_STRUCTURE = '{{lng}}/{{ns}}';
-var LOCALE_EXTENSION = 'json';
-export var defaultConfig = {
+const DEFAULT_LANGUAGE = 'en';
+const OTHER_LANGUAGES = [];
+const DEFAULT_NAMESPACE = 'common';
+const LOCALE_PATH = 'public/static/locales';
+const LOCALE_STRUCTURE = '{{lng}}/{{ns}}';
+const LOCALE_EXTENSION = 'json';
+export const defaultConfig = {
     defaultLanguage: DEFAULT_LANGUAGE,
     otherLanguages: OTHER_LANGUAGES,
     load: 'currentOnly',
@@ -17,9 +17,7 @@ export var defaultConfig = {
     interpolation: {
         escapeValue: false,
         formatSeparator: ',',
-        format: function(value, format) {
-            return format === 'uppercase' ? value.toUpperCase() : value;
-        }
+        format: (value, format)=>format === 'uppercase' ? value.toUpperCase() : value
     },
     browserLanguageDetection: true,
     serverLanguageDetection: true,

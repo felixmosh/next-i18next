@@ -8,11 +8,11 @@ Object.defineProperty(exports, "subpathIsPresent", {
         return subpathIsPresent;
     }
 });
-var _url = require("url");
-var subpathIsPresent = function(url, subpath) {
+const _url = require("url");
+const subpathIsPresent = (url, subpath)=>{
     if (typeof url !== 'string' || typeof subpath !== 'string') {
         return false;
     }
-    var pathname = (0, _url.parse)(url).pathname;
-    return typeof pathname === 'string' && (pathname.length === subpath.length + 1 && pathname === "/".concat(subpath) || pathname.startsWith("/".concat(subpath, "/")));
+    const { pathname } = (0, _url.parse)(url);
+    return typeof pathname === 'string' && (pathname.length === subpath.length + 1 && pathname === `/${subpath}` || pathname.startsWith(`/${subpath}/`));
 };

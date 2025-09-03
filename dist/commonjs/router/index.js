@@ -8,4 +8,4 @@ Object.defineProperty(exports, "wrapRouter", {
         return _wraprouter.wrapRouter;
     }
 });
-var _wraprouter = require("./wrap-router");
+const _wraprouter = require("./wrap-router");

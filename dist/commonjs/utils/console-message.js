@@ -8,28 +8,23 @@ Object.defineProperty(exports, "consoleMessage", {
         return consoleMessage;
     }
 });
-function _type_of(obj) {
-    "@swc/helpers - typeof";
-    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
-}
-var messageTypes = {
+const messageTypes = {
     error: 'error',
     info: 'info',
     warn: 'warn'
 };
 Object.freeze(messageTypes);
-var logMessage = function(messageType, message) {
+const logMessage = (messageType, message)=>{
     if (Object.values(messageTypes).includes(messageType)) {
         console[messageType](message);
     } else {
         console.info(message);
     }
 };
-var consoleMessage = function consoleMessage(messageType, message) {
-    var config = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : this.config;
-    var errorStackTraceLimit = config.errorStackTraceLimit, strictMode = config.strictMode;
-    var prevStackLimit = Error.stackTraceLimit;
-    var util;
+const consoleMessage = function(messageType, message, config = this.config) {
+    const { errorStackTraceLimit, strictMode } = config;
+    const prevStackLimit = Error.stackTraceLimit;
+    let util;
     if (!strictMode) {
         return;
     }
@@ -48,9 +43,17 @@ var consoleMessage = function consoleMessage(messageType, message) {
     /*
     Make sure the message is a string
   */ if (typeof message !== 'string') {
-        var metaError = new Error();
+        const metaError = new Error();
         metaError.name = 'Meta';
-        metaError.message = "Param message needs to be of type: string. Instead, '".concat(typeof message === "undefined" ? "undefined" : _type_of(message), "' was provided.\n\n------------------------------------------------\n\n​\n        The provided ").concat(typeof message === "undefined" ? "undefined" : _type_of(message), ":\n\n​\n          ").concat(util.inspect(message, true, 8, true), "\n​\n------------------------------------------------\n\n    ");
+        metaError.message = `Param message needs to be of type: string. Instead, '${typeof message}' was provided.\n
+------------------------------------------------\n
+\u200b
+        The provided ${typeof message}:\n
+\u200b
+          ${util.inspect(message, true, 8, true)}
+\u200b
+------------------------------------------------\n
+    `;
         console.error(metaError);
         return;
     }

@@ -8,7 +8,7 @@ Object.defineProperty(exports, "nextI18NextMiddleware", {
         return _nexti18nextmiddleware.default;
     }
 });
-var _nexti18nextmiddleware = /*#__PURE__*/ _interop_require_default(require("./next-i18next-middleware"));
+const _nexti18nextmiddleware = /*#__PURE__*/ _interop_require_default(require("./next-i18next-middleware"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
