@@ -86,10 +86,14 @@ export default function (nexti18next) {
         const params = localeSubpathRoute(req.url)
         if (params !== false) {
           const { subpath } = params
-          req.query = { ...req.query, lng: currentLng, __nextLocale: currentLng, __nextDefaultLocale: config.defaultLanguage }
           req.url = removeSubpath(req.url, subpath)
         }
       }
+
+      /*
+      Set the locale query params for Next.js
+       */
+      req.query = { ...req.query, lng: currentLng, __nextLocale: currentLng, __nextDefaultLocale: config.defaultLanguage }
     }
 
     next()
