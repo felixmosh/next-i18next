@@ -80,22 +80,20 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Initiate vars to return
       */
-      const { req } = ctx.ctx
+      const { req, locale, defaultLocale } = ctx.ctx
       let initialI18nStore = {}
-      let initialLanguage = null
+      let initialLanguage = locale || defaultLocale
       let i18nServerInstance = null
 
       /*
         Step 1: Determine initial language
       */
-      if (!process.browser && req && req.i18n) {
-
-        initialLanguage = lngFromReq(req)
-
+      if (!process.browser && req) {
+        i18nServerInstance = req.i18n || i18n.cloneInstance({ initImmediate: false, initAsync: false })
         /*
           Perform a lang change in case we're not on the right lang
         */
-        await req.i18n.changeLanguage(initialLanguage)
+        await i18nServerInstance.changeLanguage(initialLanguage)
 
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         initialLanguage = i18n.language
@@ -127,7 +125,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 3: Perform data fetching, depending on environment
       */
-      if (!process.browser && req && req.i18n) {
+      if (!process.browser && req) {
 
         /*
           Detect the languages to load based upon the fallbackLng configuration
@@ -139,14 +137,16 @@ export const appWithTranslation = function (WrappedComponent) {
           Initialise the store with the languagesToLoad and
           necessary namespaces needed to render this specific tree
         */
-        languagesToLoad.forEach((lng) => {
-          initialI18nStore[lng] = {}
-          namespacesRequired.forEach((ns) => {
-            initialI18nStore[lng][ns] = (
-              (req.i18n.services.resourceStore.data[lng] || {})[ns] || {}
-            )
-          })
-        })
+        initialI18nStore = Object.fromEntries(
+          languagesToLoad.map((lng) => [
+            lng,
+            Object.fromEntries(
+              namespacesRequired.map((ns) => [ns, (i18nServerInstance.services.resourceStore.data[lng] || {})[ns] || {}])
+            ),
+          ])
+        );
+
+
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
 
         /*
@@ -160,9 +160,8 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 4: Overwrite i18n.toJSON method to be able to serialize the instance
       */
-      if (!process.browser && req && req.i18n) {
-        req.i18n.toJSON = () => null
-        i18nServerInstance = req.i18n
+      if (!process.browser && req && i18nServerInstance) {
+        i18nServerInstance.toJSON = () => undefined
       }
 
       /*
