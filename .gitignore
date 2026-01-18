@@ -20,3 +20,5 @@ coverage/
 
 # npm
 package-lock.json
+
+.yarn
