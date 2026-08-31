@@ -1,3 +1,4 @@
+import { jsx as _jsx } from "react/jsx-runtime";
 /*
   This `Link` component is a wrap of the standard
   NextJs `Link` component, with some simple lang
@@ -14,8 +15,7 @@
 
   Very important: if you import `Link` from NextJs directly,
   and not this file, your lang subpath routing will break.
-*/ import { jsx as _jsx } from "react/jsx-runtime";
-import React from 'react';
+*/ import React from 'react';
 import NextLink from 'next/link';
 import { withTranslation } from 'react-i18next';
 import { lngPathCorrector, subpathIsRequired } from '../utils';

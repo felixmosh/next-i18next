@@ -5,41 +5,41 @@ Object.defineProperty(exports, "__esModule", {
 function _export(target, all) {
     for(var name in all)Object.defineProperty(target, name, {
         enumerable: true,
-        get: all[name]
+        get: Object.getOwnPropertyDescriptor(all, name).get
     });
 }
 _export(exports, {
-    addSubpath: function() {
+    get addSubpath () {
         return _addsubpath.addSubpath;
     },
-    consoleMessage: function() {
+    get consoleMessage () {
         return _consolemessage.consoleMessage;
     },
-    isServer: function() {
+    get isServer () {
         return _isserver.isServer;
     },
-    lngFromReq: function() {
+    get lngFromReq () {
         return _lngfromreq.lngFromReq;
     },
-    lngPathCorrector: function() {
+    get lngPathCorrector () {
         return _lngpathcorrector.lngPathCorrector;
     },
-    lngsToLoad: function() {
+    get lngsToLoad () {
         return _lngstoload.lngsToLoad;
     },
-    redirectWithoutCache: function() {
+    get redirectWithoutCache () {
         return _redirectwithoutcache.redirectWithoutCache;
     },
-    removeSubpath: function() {
+    get removeSubpath () {
         return _removesubpath.removeSubpath;
     },
-    subpathFromLng: function() {
+    get subpathFromLng () {
         return _subpathfromlng.subpathFromLng;
     },
-    subpathIsPresent: function() {
+    get subpathIsPresent () {
         return _subpathispresent.subpathIsPresent;
     },
-    subpathIsRequired: function() {
+    get subpathIsRequired () {
         return _subpathisrequired.subpathIsRequired;
     }
 });

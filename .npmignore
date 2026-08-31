@@ -35,3 +35,7 @@ jest-puppeteer.config.js
 .github
 Procfile
 *.md
+
+.yarn
+.yarnrc.yml
+.swcrc
