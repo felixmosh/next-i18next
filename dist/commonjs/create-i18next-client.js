@@ -20,13 +20,7 @@ const _default = (config)=>{
     if (!_i18next.default.isInitialized) {
         if (!process.browser) {
             const i18nextFSBackend = require('i18next-fs-backend/cjs');
-            const i18nextMiddleware = require('i18next-http-middleware/cjs');
             _i18next.default.use(i18nextFSBackend);
-            if (config.serverLanguageDetection) {
-                const serverDetectors = new i18nextMiddleware.LanguageDetector();
-                config.customDetectors.forEach((detector)=>serverDetectors.addDetector(detector));
-                _i18next.default.use(serverDetectors);
-            }
         } else {
             _i18next.default.use(_i18nexthttpbackend.default);
         }

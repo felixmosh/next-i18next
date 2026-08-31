@@ -5,13 +5,7 @@ export default ((config)=>{
     if (!i18n.isInitialized) {
         if (!process.browser) {
             const i18nextFSBackend = require('i18next-fs-backend/cjs');
-            const i18nextMiddleware = require('i18next-http-middleware/cjs');
             i18n.use(i18nextFSBackend);
-            if (config.serverLanguageDetection) {
-                const serverDetectors = new i18nextMiddleware.LanguageDetector();
-                config.customDetectors.forEach((detector)=>serverDetectors.addDetector(detector));
-                i18n.use(serverDetectors);
-            }
         } else {
             i18n.use(i18nextHTTPBackend);
         }
